@@ -1,16 +1,15 @@
 {
 	"name": "solid-tone",
 	"scripts": {
-		"dev": "solid-start dev",
-		"build": "solid-start build",
-		"start": "solid-start start"
+		"start": "vite",
+		"dev": "vite",
+		"build": "vite build",
+		"serve": "vite preview"
 	},
 	"type": "module",
 	"devDependencies": {
 		"autoprefixer": "^10.4.12",
 		"postcss": "^8.4.18",
-		"solid-start-node": "^0.2.0",
-		"solid-start-vercel": "^0.2.5",
 		"tailwindcss": "^3.2.0",
 		"typescript": "^4.8.4",
 		"vite": "^3.1.8"
@@ -20,9 +19,9 @@
 		"@solidjs/router": "^0.5.0",
 		"@tonejs/midi": "^2.0.28",
 		"solid-js": "^1.6.0",
-		"solid-start": "^0.2.0",
 		"tone": "^14.7.77",
-		"undici": "^5.11.0"
+		"undici": "^5.11.0",
+		"vite-plugin-solid": "^2.4.0"
 	},
 	"engines": {
 		"node": ">=16"
