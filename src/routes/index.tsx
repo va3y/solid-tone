@@ -1,6 +1,8 @@
 import * as Tone from "tone";
-import { createSignal, onMount, Show } from "solid-js";
-import { Synth } from "tone";
+import { createSignal, JSX, onMount, Show } from "solid-js";
+import { PolySynth, Synth } from "tone";
+import midi from "../midi.json";
+import { Midi, MidiJSON } from "@tonejs/midi";
 
 export default function Home() {
 	const [synthBase, setSynth] = createSignal<Synth>();
@@ -10,13 +12,38 @@ export default function Home() {
 	const onPress = () => {
 		setShowMagicDiv(true);
 		const synth = synthBase().toDestination();
+
 		const now = Tone.now();
 		synth.triggerAttackRelease("C4", "8n", now);
 		synth.triggerAttackRelease("E4", "8n", now + 0.01);
 		synth.triggerAttackRelease("G4", "8n", now + 0.02);
+
+		const midiFile = new Midi();
+		midiFile.fromJSON(midi as MidiJSON);
+
+		midiFile.tracks.forEach((track) => {
+			const synth = new Tone.PolySynth(Tone.Synth, {
+				envelope: {
+					attack: 0.02,
+					decay: 0.1,
+					sustain: 0.3,
+					release: 1,
+				},
+			}).toDestination();
+			track.notes.forEach((note) => {
+				synth.triggerAttackRelease(
+					note.name,
+					note.duration,
+					note.time + now,
+					note.velocity
+				);
+			});
+		});
 	};
 
-	const onMouseMove = (e: MouseEvent) => {
+	const onMouseMove: JSX.EventHandlerUnion<HTMLDivElement, MouseEvent> = (
+		e
+	) => {
 		const target = e.target;
 		const rect = (target as HTMLDivElement).getBoundingClientRect();
 
